@@ -1,12 +1,14 @@
 import logo from './logo.svg';
 import './App.css';
-import Board from './Board.js'
+// import Board from './Board.js'
+import BoardNew from './BoardNew.js'
 
 
 function App() {
   return (
     <div className="App">
-      <Board />
+      {/* <Board /> */}
+      <BoardNew />
 
 
       {/* <header className="App-header">
