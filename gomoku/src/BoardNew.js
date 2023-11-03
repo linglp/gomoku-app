@@ -32,6 +32,15 @@ function fiveInRow(squareArr, myPlacement){
 
 }
 
+function sortByRow(arr){
+    //sort two dimensional array by row
+    arr.sort(function(a,b) {
+        return a[0]-b[0]
+    });
+
+    return arr
+}
+
 function winByRow(copySquares,rowIndex, myPlacement){
     var squareRow = copySquares[rowIndex]
     var fiveInRowResult = fiveInRow(squareRow, myPlacement)
@@ -54,24 +63,25 @@ function winByColumn(copySquares, colIndex, myPlacement){
 
 function findDiagnalNeighbors(rowIndex, colIndex){
     var upperRight = []
-    var upperRightRow = rowIndex-1
-    var upperRightCol = colIndex+1
-    while ((upperRightRow >=0) && (upperRightCol <=9)){
+    var upperRightRow = rowIndex+1
+    var upperRightCol = colIndex-1
+    while ((upperRightRow <= 9) && (upperRightCol >=0)){
         upperRight.push([upperRightRow, upperRightCol])
-        upperRightRow = upperRightRow-1
-        upperRightCol = upperRightCol+1
+        upperRightRow = upperRightRow+1
+        upperRightCol = upperRightCol-1
     }
+    console.log('upperRight', upperRight)
     var lowerLeft = []
-    var lowerLeftRow = rowIndex+1
-    var lowerLeftCol = colIndex-1
-    while ((lowerLeftRow <=9) && (lowerLeftCol >=0)){
+    var lowerLeftRow = rowIndex-1
+    var lowerLeftCol = colIndex+1
+    while ((lowerLeftRow >= 0) && (lowerLeftCol <= 9)){
         lowerLeft.push([lowerLeftRow, lowerLeftCol])
-        lowerLeftRow = lowerLeftRow+1
-        lowerLeftCol = lowerLeftCol-1
+        lowerLeftRow = lowerLeftRow-1
+        lowerLeftCol = lowerLeftCol+1
     }
     //added in the point being placed 
     lowerLeft.push([rowIndex, colIndex])
-    const oneDiagnal = lowerLeft.concat(upperRight)
+    var oneDiagnal = lowerLeft.concat(upperRight)
 
     var upperLeft = []
     var upperLeftRow = rowIndex-1
@@ -91,7 +101,10 @@ function findDiagnalNeighbors(rowIndex, colIndex){
         lowerRightCol = lowerRightCol+1
     }
     lowerRight.push([rowIndex, colIndex])
-    const twoDiagnal = lowerRight.concat(upperLeft)
+    var twoDiagnal = lowerRight.concat(upperLeft)
+
+    oneDiagnal = sortByRow(oneDiagnal)
+    twoDiagnal = sortByRow(twoDiagnal)
     
     return [oneDiagnal, twoDiagnal]
 }
@@ -110,6 +123,8 @@ function winByDiagnal(copySquares,rowIndex, colIndex, myPlacement){
     var ifWin = false
     //find all the diagnal neighbors of a given point
     var diagnalNeighbors = findDiagnalNeighbors(rowIndex, colIndex)
+
+    console.log('find all diagnal neighbors', diagnalNeighbors)
 
     //gather all the diagnal neighbors of a given point
     var oneDiagnalValArr = gatherNeighbors(copySquares, diagnalNeighbors[0])
